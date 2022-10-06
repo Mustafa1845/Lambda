@@ -1,5 +1,10 @@
 name: deploy to lambda
-on: [push]
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
 jobs:
 
   deploy_source:
@@ -15,4 +20,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
           function_name: HelloWorldFunction
-          source: Lambda/lambda_function.py
+          source: lambda_function.py
