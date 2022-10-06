@@ -17,7 +17,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: Build binary
         run: |
-          cd Lambda && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -o main main.go && zip Lambda_demo.zip main
+          cd Lambda_demo && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -o main main.go && zip Lambda_demo.zip main
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
@@ -25,7 +25,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
           function_name: HelloWorldFunction
-          zip_file: Lambda/Lambda_demo.zip
+          zip_file: Lambda_demo/Lambda_demo.zip
           memory_size: 128
           timeout: 10
           handler: foobar
