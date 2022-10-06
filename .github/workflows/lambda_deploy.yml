@@ -2,17 +2,97 @@ name: deploy to lambda
 on: [push]
 jobs:
 
-  deploy:
-    name: deploy lambda function
+  deploy_zip:
+    name: deploy lambda function from zip
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [1.16.x, 1.17.x]
     steps:
-    - uses: actions/checkout@v1
-    - name: AWS Lambda Deploy
-      uses: appleboy/lambda-action@master
-      with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws_region: ${{ secrets.AWS_REGION }}
-        function_name: HelloWorldFunction
-        zip_file: lambda_demo.zip
-        dry_run: true
+      - name: checkout source code
+        uses: actions/checkout@v1
+      - name: Install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+      
+      - name: deploy zip
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+
+      - name: update env
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          environment: foo=bar,author=appleboy
+          debug: true
+
+      - name: update config
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+          memory_size: 128
+          timeout: 10
+          # origin value is "hello"
+          handler: foobar
+
+      - name: dry run
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+          dry_run: true
+
+      - name: update role
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+          role: arn:aws:iam::502946233425:role/service-role/gorush-role-8nb845iz
+          dry_run: true
+
+      - name: update runtime
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+          runtime: nodejs12.x
+          dry_run: true
+
+      - name: deploy description
+        uses: ./
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: HelloWorldFunction
+          zip_file: Lambda_demo/Lambda_demo.zip
+          debug: true
+          description: update description from github actions
