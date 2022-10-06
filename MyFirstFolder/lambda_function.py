@@ -27,4 +27,4 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda, ' + name)
     }
-    # this function is pushed from github
+    # this function is pushed from github and changes done
