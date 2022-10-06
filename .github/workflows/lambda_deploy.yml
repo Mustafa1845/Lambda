@@ -27,3 +27,4 @@ jobs:
           timeout: 10
           handler: foobar
           runtime: nodejs12.x
+          description: "aws:states:opt-out"
