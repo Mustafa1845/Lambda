@@ -25,6 +25,6 @@ def lambda_handler(event, context):
 # return a properly formatted JSON object
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda Mustafa, '+ name)
+        'body': json.dumps('Hello from Lambda, ' + name)
     }
-#There is a change in the lambda function by github
+    # this function is pushed from github
