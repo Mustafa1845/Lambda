@@ -5,6 +5,7 @@ on:
     - main
     paths:
     - 'MyFirstFolder/index.js'
+    - 'MyFirstFolder/index2.js'
 
 jobs:  #Workflow run is made up of one or more jobs
   deploy_lambda:
@@ -31,6 +32,6 @@ jobs:  #Workflow run is made up of one or more jobs
       - name: deploy
         run: |
           cd MyFirstFolder
-          zip -u Github_lambda.zip index.js #--> Zip the Code As we know lambda function accept the zip file.
+          zip -u Github_lambda.zip index.js index2.js #--> Zip the Code As we know lambda function accept the zip file.
           aws lambda update-function-code --function-name=Github_lambda --zip-file=fileb://Github_lambda.zip 
 # At last the AWS CLI command to Update the Zip file with existing One (With Correct Function Name)

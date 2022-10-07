@@ -31,6 +31,6 @@ jobs:  #Workflow run is made up of one or more jobs
       - name: deploy
         run: |
           cd MyFirstFolder
-          zip -j deploy.zip ./* #--> Zip the Code As we know lambda function accept the zip file.
+          zip -u deploy.zip lambda_function.py #--> Zip the Code As we know lambda function accept the zip file.
           aws lambda update-function-code --function-name=HelloWorldFunction --zip-file=fileb://deploy.zip 
 # At last the AWS CLI command to Update the Zip file with existing One (With Correct Function Name)
