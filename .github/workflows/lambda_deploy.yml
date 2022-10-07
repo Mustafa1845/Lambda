@@ -5,7 +5,8 @@ on:
   push:
     branches:
     - main
-   
+    paths:
+    - 'MyFirstFolder/**'
 
 jobs:  #Workflow run is made up of one or more jobs
   deploy_lambda:
@@ -27,7 +28,7 @@ jobs:  #Workflow run is made up of one or more jobs
         env:
           CI: true
         run: |
-          cd MyFirstFolder
+          cd ./MyFirstFolder
           npm ci 
       - name: deploy
         run: |
